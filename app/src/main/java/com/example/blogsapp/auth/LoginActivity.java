@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +13,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.blogsapp.R;
+import com.example.blogsapp.callback.AuthCallBack;
+import com.example.blogsapp.database.UserController;
+import com.example.blogsapp.home.HomeActivity;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputLayout login_TF_email;
@@ -21,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login_BTN_login;
     private Button login_BTN_signup;
     private CircularProgressIndicator login_PB_loading;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initVars() {
+        userController = new UserController();
+        userController.setAuthCallBack(new AuthCallBack() {
+            @Override
+            public void onCreateAuthAccountComplete(Task<AuthResult> task) {
+
+            }
+
+            @Override
+            public void onLoginComplete(Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    // go to home screen
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    // show error message
+                    String err = task.getException().getMessage().toString();
+                    Toast.makeText(LoginActivity.this, err, Toast.LENGTH_SHORT).show();
+                }
+
+                login_PB_loading.setVisibility(View.INVISIBLE);
+            }
+        });
+
         login_BTN_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,6 +84,33 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        login_BTN_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = login_TF_email.getEditText().getText().toString();
+                String password = login_TF_password.getEditText().getText().toString();
+                if(email.isEmpty() || password.isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // do login flow
+                login_PB_loading.setVisibility(View.VISIBLE);
+                userController.loginUser(email, password);
+            }
+        });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        UserController userController1 = new UserController();
+        if(userController1.getCurrentUser() != null){
+            // open home screen
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
 }

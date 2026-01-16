@@ -83,12 +83,17 @@ public class SignupActivity extends AppCompatActivity {
                             .setFirstName(signup_TF_firstName.getEditText().getText().toString())
                             .setLastName(signup_TF_lastName.getEditText().getText().toString());
                     user.setUid(uid);
-                    userController.CreateUserInfo(user);
+                    userController.createUserInfo(user);
                 }else{
                     String error = task.getException().getMessage().toString();
                     Toast.makeText(SignupActivity.this, "Account creation failed " + error, Toast.LENGTH_SHORT).show();
                     signup_PB_loading.setVisibility(View.INVISIBLE);
                 }
+            }
+
+            @Override
+            public void onLoginComplete(Task<AuthResult> task) {
+
             }
         });
 
@@ -100,7 +105,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 String email = signup_TF_email.getEditText().getText().toString();
                 String password = signup_TF_password.getEditText().getText().toString();
-                userController.CreateAuthUser(email, password);
+                userController.createAuthUser(email, password);
             }
         });
     }

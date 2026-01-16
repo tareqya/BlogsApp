@@ -32,7 +32,7 @@ public class UserController {
         this.userCallBack = userCallBack;
     }
 
-    public void CreateAuthUser(String email, String password){
+    public void createAuthUser(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -42,7 +42,7 @@ public class UserController {
                 });
     }
 
-    public void CreateUserInfo(User user){
+    public void createUserInfo(User user){
         db.collection(USERS).document(user.getUid()).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -56,4 +56,13 @@ public class UserController {
         return mAuth.getCurrentUser();
     }
 
+    public void loginUser(String email, String password){
+        this.mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        authCallBack.onLoginComplete(task);
+                    }
+                });
+    }
 }
