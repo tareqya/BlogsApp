@@ -43,4 +43,8 @@ public class ResearchController {
             }
         });
     }
+
+    public void updateResearch(Research research){
+        this.db.collection(RESEARCH_TABLE).document(research.getUid()).set(research);
+    }
 }

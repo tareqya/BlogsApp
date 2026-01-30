@@ -1,9 +1,13 @@
 package com.example.blogsapp.database;
 
-public class Research extends Uid{
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class Research extends Uid implements Serializable {
     private String title;
     private String category;
     private String description;
+    private ArrayList<Comment> comments;
 
     public Research(){
 
@@ -33,6 +37,13 @@ public class Research extends Uid{
 
     public Research setDescription(String description) {
         this.description = description;
+        return this;
+    }
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+    public Research setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
         return this;
     }
 }
