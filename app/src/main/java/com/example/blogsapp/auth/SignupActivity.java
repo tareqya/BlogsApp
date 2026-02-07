@@ -70,6 +70,11 @@ public class SignupActivity extends AppCompatActivity {
                     signup_PB_loading.setVisibility(View.INVISIBLE);
                 }
             }
+
+            @Override
+            public void onGetUserComplete(User user) {
+
+            }
         });
         userController.setAuthCallBack(new AuthCallBack() {
             @Override

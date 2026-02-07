@@ -22,8 +22,10 @@ import com.example.blogsapp.R;
 import com.example.blogsapp.adapter.ResearchAdapter;
 import com.example.blogsapp.callback.ResearchAdapterCallBack;
 import com.example.blogsapp.callback.ResearchCallBack;
+import com.example.blogsapp.database.Comment;
 import com.example.blogsapp.database.Research;
 import com.example.blogsapp.database.ResearchController;
+import com.example.blogsapp.database.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ import java.util.Arrays;
 
 public class ResearchFragment extends Fragment {
     public static final String RESEARCH_KEY = "RESEARCH";
+    public static final String USER_KEY = "USER";
     public static final String[] ResearchCategories = {"شعر", "تدبر لغة القرآن", "اللغة العربية" , "نقاط جدلية", "تحليل نفسي", "الكل"};
     private RecyclerView freg_RV_researches;
     private SearchView freg_search_view;
@@ -38,9 +41,15 @@ public class ResearchFragment extends Fragment {
     private ArrayList<Research> allResearches;
     private ResearchController researchController;
     private Context context;
+    private User user;
+
     public ResearchFragment(Context context) {
         researchController = new ResearchController();
         this.context = context;
+    }
+
+    public void setUser(User user){
+        this.user = user;
     }
 
     @Override
@@ -65,6 +74,11 @@ public class ResearchFragment extends Fragment {
                 // set the data to research adapter
                 allResearches = researches;
                 setResearchesInRecycleView(researches);
+            }
+
+            @Override
+            public void onFetchCommentsComplete(ArrayList<Comment> comments) {
+
             }
         });
 
@@ -138,6 +152,7 @@ public class ResearchFragment extends Fragment {
             public void onResearchSelected(Research research) {
                 Intent intent = new Intent(context, ResearchActivity.class);
                 intent.putExtra(RESEARCH_KEY, research);
+                intent.putExtra(USER_KEY, user);
                 startActivity(intent);
             }
         });

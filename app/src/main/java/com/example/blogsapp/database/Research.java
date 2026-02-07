@@ -7,10 +7,8 @@ public class Research extends Uid implements Serializable {
     private String title;
     private String category;
     private String description;
-    private ArrayList<Comment> comments;
 
     public Research(){
-
     }
 
     public String getTitle() {
@@ -39,11 +37,5 @@ public class Research extends Uid implements Serializable {
         this.description = description;
         return this;
     }
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-    public Research setComments(ArrayList<Comment> comments) {
-        this.comments = comments;
-        return this;
-    }
+
 }

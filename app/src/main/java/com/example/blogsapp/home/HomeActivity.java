@@ -14,6 +14,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.blogsapp.R;
+import com.example.blogsapp.callback.UserCallBack;
+import com.example.blogsapp.database.User;
+import com.example.blogsapp.database.UserController;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -22,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     private FrameLayout home_frame_profile;
     private FrameLayout home_frame_home;
     private BottomNavigationView home_BN;
+    private UserController userController;
     private HomeFragment homeFragment;
     private ProfileFragment profileFragment;
     private ResearchFragment researchFragment;
@@ -47,7 +52,21 @@ public class HomeActivity extends AppCompatActivity {
         home_BN = findViewById(R.id.home_BN);
     }
     private void initVars() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        userController = new UserController();
+        userController.setUserCallBack(new UserCallBack() {
+            @Override
+            public void onCreateUserComplete(Task<Void> task) {
+
+            }
+
+            @Override
+            public void onGetUserComplete(User user) {
+                // send the user to fragments
+//                homeFragment.setUser(user);
+//                profileFragment.setUser(user);
+                researchFragment.setUser(user);
+            }
+        });
 
         homeFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.home_frame_home, homeFragment).commit();
@@ -60,7 +79,8 @@ public class HomeActivity extends AppCompatActivity {
         home_frame_profile.setVisibility(View.INVISIBLE);
         home_frame_home.setVisibility(View.VISIBLE);
 
-
+        String uid = userController.getCurrentUser().getUid();
+        userController.getUserInfo(uid);
 
         home_BN.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

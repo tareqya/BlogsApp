@@ -18,13 +18,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.blogsapp.R;
+import com.example.blogsapp.adapter.CommentAdapter;
+import com.example.blogsapp.adapter.ResearchAdapter;
+import com.example.blogsapp.callback.ResearchAdapterCallBack;
+import com.example.blogsapp.callback.ResearchCallBack;
 import com.example.blogsapp.database.Comment;
 import com.example.blogsapp.database.Research;
 import com.example.blogsapp.database.ResearchController;
+import com.example.blogsapp.database.User;
+import com.google.firebase.Timestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class ResearchActivity extends AppCompatActivity {
     private TextView research_TV_title;
@@ -33,6 +43,9 @@ public class ResearchActivity extends AppCompatActivity {
     private Button research_BTN_AddComment;
     private Research research;
     private ResearchController researchController;
+    private RecyclerView commentsRecyclerView;
+    private User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +60,13 @@ public class ResearchActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         research = (Research) intent.getSerializableExtra(ResearchFragment.RESEARCH_KEY);
-        
+        user = (User) intent.getSerializableExtra(ResearchFragment.USER_KEY);
         initViews();
         initVars();
     }
 
     private void initViews() {
+        commentsRecyclerView = findViewById(R.id.commentsRecyclerView);
         research_TV_title = findViewById(R.id.research_TV_title);
         research_TV_category = findViewById(R.id.research_TV_category);
         research_TV_description = findViewById(R.id.research_TV_description);
@@ -62,11 +76,21 @@ public class ResearchActivity extends AppCompatActivity {
 
     private void initVars() {
         researchController = new ResearchController();
+        researchController.setResearchCallBack(new ResearchCallBack() {
+            @Override
+            public void onFetchResearchesComplete(ArrayList<Research> researches) {
 
+            }
+
+            @Override
+            public void onFetchCommentsComplete(ArrayList<Comment> comments) {
+                setCommentsInRecycleView(comments);
+            }
+        });
+        researchController.fetchComments(research.getUid());
         research_TV_title.setText(research.getTitle());
         research_TV_category.setText(research.getCategory());
         research_TV_description.setText(research.getDescription());
-
         research_BTN_AddComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,14 +137,12 @@ public class ResearchActivity extends AppCompatActivity {
                 }
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    // TODO: add the user
-                    LocalDateTime timestamp = LocalDateTime.now();
                     Comment comment1 = new Comment()
                             .setContent(comment)
-                            .setTimestamp(timestamp)
-                            .setAuthor(null);
-                    research.getComments().add(comment1);
-                    researchController.updateResearch(research);
+                            .setTimestamp(Timestamp.now())
+                            .setAuthor(user);
+
+                    researchController.addCommentToResearch(research.getUid(), comment1);
                     Toast.makeText(this, "تم حفظ التعليق", Toast.LENGTH_SHORT).show();
                 }
 
@@ -131,5 +153,14 @@ public class ResearchActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void setCommentsInRecycleView(ArrayList<Comment> comments){
+        CommentAdapter commentAdapter = new CommentAdapter(this, comments);
+
+        commentsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        commentsRecyclerView.setHasFixedSize(true);
+        commentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        commentsRecyclerView.setAdapter(commentAdapter);
+
+    }
 
 }

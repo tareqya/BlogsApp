@@ -1,11 +1,13 @@
 package com.example.blogsapp.database;
 
-import java.time.LocalDateTime;
+import com.google.firebase.Timestamp;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment extends Uid implements Serializable {
     private String content;
     private User author;
-    private LocalDateTime timestamp;
+    private Timestamp timestamp;
 
     public Comment() {}
 
@@ -27,11 +29,11 @@ public class Comment {
         return this;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public Comment setTimestamp(LocalDateTime timestamp) {
+    public Comment setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
         return this;
     }

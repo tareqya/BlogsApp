@@ -1,6 +1,8 @@
 package com.example.blogsapp.database;
 
-public class User extends Uid {
+import java.io.Serializable;
+
+public class User extends Uid implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
