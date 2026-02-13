@@ -81,4 +81,12 @@ public class UserController {
             }
         });
     }
+
+    public void logoutUser() {
+        this.mAuth.signOut();
+    }
+
+    public void updateUserInfo(User user){
+        this.db.collection(USERS).document(user.getUid()).set(user);
+    }
 }

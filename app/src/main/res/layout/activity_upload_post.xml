@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home.UploadPostActivity">
+    <TextView
+        android:id="@+id/post_TV_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Post"
+        android:textSize="24sp"
+        android:textColor="@color/dark_blue"
+        android:padding="10dp"
+        android:textStyle="bold"
+        />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/post_TF_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        style="?attr/textInputOutlinedStyle"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_below="@+id/post_TV_title"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/post_TF_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:layout_margin="16dp"
+        android:layout_below="@id/post_TF_title"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:maxLines="6"
+            android:scrollbars="vertical" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/post_IV_image"
+        android:layout_centerHorizontal="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="centerInside"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/select"
+        android:layout_below="@id/post_TF_description"/>
+
+    <Button
+        android:id="@+id/post_BTN_addPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Post"
+        android:layout_below="@id/post_IV_image"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        />
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/post_PB_loading"
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:layout_below="@id/post_BTN_addPost"
+        />
+</RelativeLayout>

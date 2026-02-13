@@ -6,7 +6,7 @@ public class User extends Uid implements Serializable {
     private String email;
     private String firstName;
     private String lastName;
-    private boolean isAdmin;
+    private boolean admin;
 
     public User(){
 
@@ -39,12 +39,12 @@ public class User extends Uid implements Serializable {
         return this;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public boolean getAdmin() {
+        return admin;
     }
 
     public User setAdmin(boolean admin) {
-        isAdmin = admin;
+        this.admin = admin;
         return this;
     }
 }

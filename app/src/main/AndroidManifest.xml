@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.BlogsApp">
         <activity
+            android:name=".home.UploadPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.ResearchActivity"
             android:exported="false" />
         <activity
