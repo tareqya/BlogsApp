@@ -63,6 +63,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onCreateUserComplete(Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(SignupActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+                    userController.logoutUser();
                     finish();
                 }else{
                     String error = task.getException().getMessage().toString();
