@@ -62,13 +62,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onGetUserComplete(User user) {
                 // send the user to fragments
-//                homeFragment.setUser(user);
+                homeFragment.setUser(user);
                 profileFragment.setUser(user);
                 researchFragment.setUser(user);
             }
         });
 
-        homeFragment = new HomeFragment();
+        homeFragment = new HomeFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.home_frame_home, homeFragment).commit();
         profileFragment = new ProfileFragment(this);
         getSupportFragmentManager().beginTransaction().add(R.id.home_frame_profile, profileFragment).commit();

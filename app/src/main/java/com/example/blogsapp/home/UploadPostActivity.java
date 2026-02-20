@@ -1,7 +1,6 @@
 package com.example.blogsapp.home;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,6 +27,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UploadPostActivity extends AppCompatActivity {
     private ImagePicker imagePicker;
@@ -85,7 +83,6 @@ public class UploadPostActivity extends AppCompatActivity {
         postController.setPostCallBack(new PostCallBack() {
             @Override
             public void onCreatePostComplete(Task<Void> task) {
-                // TODO: handle when add post complete send notification to all users
                 post_PB_loading.setVisibility(View.INVISIBLE);
 
                 if(task.isSuccessful()){
@@ -95,6 +92,11 @@ public class UploadPostActivity extends AppCompatActivity {
                     String err = task.getException().getMessage().toString();
                     Toast.makeText(UploadPostActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void onFetchPostsComplete(ArrayList<Post> posts) {
+
             }
         });
 

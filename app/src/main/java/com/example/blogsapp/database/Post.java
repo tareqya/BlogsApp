@@ -4,11 +4,10 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-public class Post extends Uid implements Serializable {
+public class Post extends Uid implements Serializable, Comparable<Post> {
     private String title;
     private String description;
     private String image;
-
     private Timestamp timestamp;
 
     public Post(){
@@ -51,4 +50,14 @@ public class Post extends Uid implements Serializable {
         return this;
     }
 
+    @Override
+    public int compareTo(Post post) {
+        if(this.timestamp.compareTo(post.timestamp) > 0){
+            return -1;
+        }
+        if(this.timestamp.compareTo(post.timestamp) < 0){
+            return 1;
+        }
+        return 0;
+    }
 }
