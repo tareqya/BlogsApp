@@ -46,6 +46,7 @@ public class ResearchFragment extends Fragment {
     public ResearchFragment(Context context) {
         researchController = new ResearchController();
         this.context = context;
+        allResearches = new ArrayList<>();
     }
 
     public void setUser(User user){
