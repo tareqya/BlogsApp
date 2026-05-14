@@ -12,10 +12,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.example.blogsapp.R;
 import com.example.blogsapp.callback.AuthCallBack;
 import com.example.blogsapp.database.UserController;
 import com.example.blogsapp.home.HomeActivity;
+import com.example.blogsapp.notification.NotificationScheduler;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputLayout;
@@ -41,6 +49,18 @@ public class LoginActivity extends AppCompatActivity {
         });
         initViews();
         initVars();
+        requestNotificationPermission();
+        NotificationScheduler.scheduleRepeatingNotification(this);
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
+            }
+        }
     }
 
     public void initViews(){
